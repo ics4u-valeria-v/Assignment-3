@@ -20,7 +20,9 @@ public class RandomWalkMain extends JFrame {
 	int shapeMain;
 	int width, height;
     int colorTarget;
+    int dotColour;
     int targetX, targetY;
+    int dotX, dotY;
 
 	
 	//create the object that connect with RandomWalkSetting
@@ -64,6 +66,7 @@ public class RandomWalkMain extends JFrame {
 		width = targetWidth;
 		height = targetHeight;
 		colorTarget = color;
+		dotColour = dotColor;
 		
 		int maxX = frameWidth - targetWidth;
 		int minX = 0 + targetWidth;
@@ -72,6 +75,36 @@ public class RandomWalkMain extends JFrame {
 		int minY = 0 + targetHeight;
 		int maxY = frameHeight + targetHeight;
 		targetY = (int)(Math.random() * ((maxY - minY) + 1)) + minY;
+		
+		//set dots position
+		FindDotX( minX,  maxX, targetWidth);
+		FindDotY( minY, maxY, targetHeight);
+	}
+	
+	public void FindDotX(int minX, int maxX, int targetWidth)
+	{
+		//Find x position of the first dot
+		dotX = (int)(Math.random() * ((maxX - minX) + 1)) + minX;
+		
+		//if the dot has the same position as the object
+		/*if (dotX <= targetX+targetWidth && dotX >= 0 +targetWidth)
+		{
+			//
+			FindDotX(minX, maxX, targetWidth);
+		}	*/
+	}
+	
+	public void FindDotY(int minY, int maxY, int targetHeight)
+	{
+		//Find x position of the first dot
+		dotX = (int)(Math.random() * ((maxY - minY) + 1)) + minY;
+		
+		//if the dot has the same position as the object
+		/*if (dotX <= targetX+targetHeight && dotX >= 0 +targetHeight)
+		{
+			//
+			FindDotX(minY, maxY, targetHeight);
+		}	*/
 	}
 	
 
@@ -104,6 +137,27 @@ public class RandomWalkMain extends JFrame {
 		 {
 			 g.fillRect(targetX, targetY, width, height);
 		 }
+		 
+		 
+		//set the color of the dot based on the color that the user picked
+			if (dotColour == 1)
+			{
+				g.setColor(Color.red);
+			}
+			else if (dotColour == 2)
+			{
+				g.setColor(Color.yellow);
+			}
+			else if (dotColour == 3)
+			{
+				g.setColor(Color.green);
+			}
+			else if (dotColour == 4)
+			{
+				g.setColor(Color.blue);
+			}
+			
+			g.fillOval(dotX, dotY, 10, 10);
         
    }
 }
