@@ -10,6 +10,7 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.Rectangle;
 
 public class RandomWalkMain extends JFrame {
 
@@ -69,15 +70,11 @@ public class RandomWalkMain extends JFrame {
 		dotColour = dotColor;
 		
 		int maxX = frameWidth - (targetWidth+10);
-		System.out.print("Max X "+ maxX+"\n");
 		int minX = 0 + (targetWidth+10);
-		System.out.print("Min X"+ minX +"\n");
 		targetX = (int)(Math.random() * ((maxX - minX) + 1)) + minX;
 		
 		int minY = 0 + (targetHeight+10);
-		System.out.print("Min Y"+ minY +"\n");
 		int maxY = frameHeight - (targetHeight+10);
-		System.out.print("Max Y "+ maxY+"\n");
 		targetY = (int)(Math.random() * ((maxY - minY) + 1)) + minY;
 		
 		//set dots position
@@ -95,15 +92,10 @@ public class RandomWalkMain extends JFrame {
 		
 		//Find x position of the first dot
 		dotX = (int)(Math.random() * ((maxX - minX) + 1)) + minX;	
-		System.out.println(dotX);
-		System.out.println(targetX);
 		//if the dot has the same position as the object
 		while(dotX <= targetX+targetWidth && dotX >= targetX-targetWidth)
 		{
 			dotX = (int)(Math.random() * ((maxX - minX) + 1)) + minX;	
-			System.out.print("inside 1"+ "\n");
-			System.out.println(dotX);
-			System.out.println(targetX);
 		}
 		
 		
@@ -117,15 +109,10 @@ public class RandomWalkMain extends JFrame {
 		int height = targetHeight;
 		//Find x position of the first dot
 		dotY =(int)(Math.random() * ((maxY - minY) + 1)) + minY;
-		System.out.println(dotY);
-		System.out.println(targetY);
 		//if the dot has the same position as the object
 		while (dotY <= targetY+targetHeight && dotY >= targetY-targetHeight)
 		{
 			dotY =(int)(Math.random() * ((maxY - minY) + 1)) + minY;
-			System.out.print("inside 2"+ "\n");	
-			System.out.println(dotY);
-			System.out.println(targetY);
 		}
 		
 	}
@@ -151,14 +138,16 @@ public class RandomWalkMain extends JFrame {
 			g.setColor(Color.blue);
 		}
 		
-		
+		//create rectangle that will detect collision
+		Rectangle main = new Rectangle(targetX, targetY, width, height);
+		//create the shape
 		 if (shapeMain == 1)
 		 {
-			 g.fillOval(targetX, targetY, width, height); //FOR CIRCLE
+			 g.fillOval(main.x, main.y, main.width, main.height); //FOR CIRCLE
 		 }
 		 else if (shapeMain == 2)
 		 {
-			 g.fillRect(targetX, targetY, width, height);
+			 g.fillRect(main.x, main.y, main.width, main.height);
 		 }
 		 
 		 
@@ -179,10 +168,99 @@ public class RandomWalkMain extends JFrame {
 			{
 				g.setColor(Color.blue);
 			}
+			//create rectangle that will detect collision
+			Rectangle side = new Rectangle(dotX, dotY, 5, 5); 
+			//create the object/dot
+			g.fillOval(side.x, side.y, 5, 5);
 			
-			g.fillOval(dotX, dotY, 5, 5);
+			//check if the objects collided
+			while (!(dotX <= targetX+width && dotX >= targetX-width) || !(dotY <= targetY+height && dotY >= targetY-height) )
+			{
+				
+				//pick randomly where should the object move
+				int position = (int)(Math.random() * ((4 - 1) + 1)) + 1;
+				//move the object right
+				if (position == 1)
+				{ 
+					dotX = dotX + 5;
+					side.setBounds(dotX, dotY, 5, 5);
+					g.fillOval(side.x, side.y, 5, 5);
+				}
+				//move the object left
+				else if (position == 2)
+				{
+					dotX = dotX - 5;
+					side.setBounds(dotX, dotY, 5, 5);
+					g.fillOval(side.x, side.y, 5, 5);
+				}
+				//move the object up
+				else if (position == 3)
+				{
+					dotY = dotY+5;
+					side.setBounds(dotX, dotY, 5, 5);
+					g.fillOval(side.x, side.y, 5, 5);
+				}
+				//move the object up
+				else if (position == 4)
+				{
+					dotY = dotY-5;
+					side.setBounds(dotX, dotY-10, 5, 5);
+					g.fillOval(side.x, side.y, 5, 5);
+				}
+				
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
 			
 			
-        
    }
+	
+	public void drawDots(Rectangle side, Rectangle main, Graphics g)
+	{
+		//check if the objects collided
+		if (!main.intersects(side))
+		{
+			
+			//pick randomly where should the object move
+			int position = (int)(Math.random() * ((4 - 1) + 1)) + 1;
+			//move the object right
+			if (position == 1)
+			{
+				side.setBounds(dotX+10, dotY, 5, 5);
+				g.fillOval(side.x, side.y, 5, 5);
+			}
+			//move the object left
+			else if (position == 2)
+			{
+				side.setBounds(dotX-10, dotY, 5, 5);
+				g.fillOval(side.x, side.y, 5, 5);
+			}
+			//move the object up
+			else if (position == 3)
+			{
+				side.setBounds(dotX, dotY+10, 5, 5);
+				g.fillOval(side.x, side.y, 5, 5);
+			}
+			//move the object up
+			else if (position == 4)
+			{
+				side.setBounds(dotX, dotY+10, 5, 5);
+				g.fillOval(side.x, side.y, 5, 5);
+			}
+			
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			drawDots(side, main, g);
+		}
+
+	}
 }
