@@ -68,43 +68,66 @@ public class RandomWalkMain extends JFrame {
 		colorTarget = color;
 		dotColour = dotColor;
 		
-		int maxX = frameWidth - targetWidth;
-		int minX = 0 + targetWidth;
+		int maxX = frameWidth - (targetWidth+10);
+		System.out.print("Max X "+ maxX+"\n");
+		int minX = 0 + (targetWidth+10);
+		System.out.print("Min X"+ minX +"\n");
 		targetX = (int)(Math.random() * ((maxX - minX) + 1)) + minX;
 		
-		int minY = 0 + targetHeight;
-		int maxY = frameHeight + targetHeight;
+		int minY = 0 + (targetHeight+10);
+		System.out.print("Min Y"+ minY +"\n");
+		int maxY = frameHeight - (targetHeight+10);
+		System.out.print("Max Y "+ maxY+"\n");
 		targetY = (int)(Math.random() * ((maxY - minY) + 1)) + minY;
 		
 		//set dots position
 		FindDotX( minX,  maxX, targetWidth);
 		FindDotY( minY, maxY, targetHeight);
+		
+		
 	}
 	
 	public void FindDotX(int minX, int maxX, int targetWidth)
 	{
-		//Find x position of the first dot
-		dotX = (int)(Math.random() * ((maxX - minX) + 1)) + minX;
+		int min = minX;
+		int max = maxX;
+		int width = targetWidth;
 		
+		//Find x position of the first dot
+		dotX = (int)(Math.random() * ((maxX - minX) + 1)) + minX;	
+		System.out.println(dotX);
+		System.out.println(targetX);
 		//if the dot has the same position as the object
-		/*if (dotX <= targetX+targetWidth && dotX >= 0 +targetWidth)
+		while(dotX <= targetX+targetWidth && dotX >= targetX-targetWidth)
 		{
-			//
-			FindDotX(minX, maxX, targetWidth);
-		}	*/
+			dotX = (int)(Math.random() * ((maxX - minX) + 1)) + minX;	
+			System.out.print("inside 1"+ "\n");
+			System.out.println(dotX);
+			System.out.println(targetX);
+		}
+		
+		
 	}
 	
 	public void FindDotY(int minY, int maxY, int targetHeight)
 	{
-		//Find x position of the first dot
-		dotX = (int)(Math.random() * ((maxY - minY) + 1)) + minY;
 		
+		int min = minY;
+		int max = maxY;
+		int height = targetHeight;
+		//Find x position of the first dot
+		dotY =(int)(Math.random() * ((maxY - minY) + 1)) + minY;
+		System.out.println(dotY);
+		System.out.println(targetY);
 		//if the dot has the same position as the object
-		/*if (dotX <= targetX+targetHeight && dotX >= 0 +targetHeight)
+		while (dotY <= targetY+targetHeight && dotY >= targetY-targetHeight)
 		{
-			//
-			FindDotX(minY, maxY, targetHeight);
-		}	*/
+			dotY =(int)(Math.random() * ((maxY - minY) + 1)) + minY;
+			System.out.print("inside 2"+ "\n");	
+			System.out.println(dotY);
+			System.out.println(targetY);
+		}
+		
 	}
 	
 
@@ -157,7 +180,7 @@ public class RandomWalkMain extends JFrame {
 				g.setColor(Color.blue);
 			}
 			
-			g.fillOval(dotX, dotY, 10, 10);
+			g.fillOval(dotX, dotY, 5, 5);
         
    }
 }
