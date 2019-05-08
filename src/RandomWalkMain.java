@@ -132,7 +132,7 @@ public class RandomWalkMain extends JFrame {
 	
 
 	public void paint(Graphics g){
-		
+		//create 
 		//set the color based on the color that the user picked
 		if (colorTarget == 1)
 		{
@@ -181,6 +181,8 @@ public class RandomWalkMain extends JFrame {
 			}
 			
 			g.fillOval(dotX, dotY, 5, 5);
+			
+			
         
    }
 }
