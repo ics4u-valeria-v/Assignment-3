@@ -1,23 +1,21 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Graphics;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Polygon;
-import java.awt.Rectangle;
-
-public class RandomWalkMain extends JFrame {
+public class RandomWalkGuess extends JFrame {
 
 	private JPanel contentPane;
 
-	//declare global variables
+	/**
+	 * Launch the application.
+	 * 
+	 */
 	static int color1;
 	int shapeMain;
 	int width, height;
@@ -26,18 +24,13 @@ public class RandomWalkMain extends JFrame {
     int targetX, targetY;
     int dotX, dotY;
     int frameW, frameH;
-
-	
-	//create the object that connect with RandomWalkSetting
-	RandomWalkSetting rndSetting = new RandomWalkSetting();
-	/**
-	 * Launch the application.
-	 */
+    int guess_;
+    
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					RandomWalkMain frame = new RandomWalkMain(color1, color1, color1, color1, color1, color1, color1);
+					RandomWalkGuess frame = new RandomWalkGuess(color1, color1, color1, color1, color1, color1, color1, color1);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -48,41 +41,44 @@ public class RandomWalkMain extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * @param guess 
+	 * @param dot_color 
 	 * @param color 
 	 * @param shape 
 	 * @param targetHeight 
 	 * @param targetWidth 
 	 * @param frameHeight 
 	 * @param frameWidth 
-	 * @param dot_color 
 	 */
-	public RandomWalkMain(int frameWidth, int frameHeight, int targetWidth, int targetHeight, int shape, int color, int dotColor) {
+	public RandomWalkGuess(int frameWidth, int frameHeight, int targetWidth, int targetHeight, int shape, int color, int dot_color, int guess) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, frameWidth, frameHeight);
 		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 10, 5));
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		
 		//drawing the target
-		shapeMain = shape;
-		width = targetWidth;
-		height = targetHeight;
-		colorTarget = color;
-		dotColour = dotColor;
-		frameW = frameWidth;
-		frameH = frameHeight;
-		
-		int maxX = frameWidth - (targetWidth+10);
-		int minX = 0 + (targetWidth+10);
-		targetX = (int)(Math.random() * ((maxX - minX) + 1)) + minX;
-		
-		int minY = 0 + (targetHeight+10);
-		int maxY = frameHeight - (targetHeight+10);
-		targetY = (int)(Math.random() * ((maxY - minY) + 1)) + minY;
-		
-		//set dots position
-		FindDotX( minX,  maxX, targetWidth, minY, maxY, targetHeight);
+				shapeMain = shape;
+				width = targetWidth;
+				height = targetHeight;
+				colorTarget = color;
+				dotColour = dot_color;
+				frameW = frameWidth;
+				frameH = frameHeight;
+				guess_ = guess;
+				
+				int maxX = frameWidth - (targetWidth+10);
+				int minX = 0 + (targetWidth+10);
+				targetX = (int)(Math.random() * ((maxX - minX) + 1)) + minX;
+				
+				int minY = 0 + (targetHeight+10);
+				int maxY = frameHeight - (targetHeight+10);
+				targetY = (int)(Math.random() * ((maxY - minY) + 1)) + minY;
+				
+				//set dots position
+				FindDotX( minX,  maxX, targetWidth, minY, maxY, targetHeight);
+				
 	}
 	
 	public void FindDotX(int minX, int maxX, int targetWidth, int minY, int maxY, int targetHeight)
@@ -151,10 +147,9 @@ public class RandomWalkMain extends JFrame {
 			g.fillOval(dotX, dotY, 10, 10);
 			
 			int counter = 1;
-			//check if the objects collided
-			while (!(dotX <= targetX+width && dotX >= targetX-5) || !(dotY <= targetY+height && dotY >= targetY-5) )
+			
+			for (int count = 1; count <= guess_; count ++)
 			{
-				
 				//pick randomly where should the object move
 				int position = (int)(Math.random() * ((4 - 1) + 1)) + 1;
 				//move the object right
@@ -334,9 +329,24 @@ public class RandomWalkMain extends JFrame {
 				{
 					counter ++;
 				}
-			}	
+				
+				//check if they hit the boundary
+				if ((dotX <= targetX+width && dotX >= targetX-5 && dotY <= targetY+height && dotY >= targetY-5))
+				{
+					//if the user entered something different than an integer, display a warning message
+					JOptionPane.showMessageDialog(null,"You guessed it right","Random Generator Warning",JOptionPane.WARNING_MESSAGE);
+				}
+			}
 			
-			//if the user entered something different than an integer, display a warning message
-			JOptionPane.showMessageDialog(null,"Program Ended","Random Generator Warning",JOptionPane.WARNING_MESSAGE);
+			if ((dotX <= targetX+width && dotX >= targetX-5 && dotY <= targetY+height && dotY >= targetY-5))
+			{
+				//if the user entered something different than an integer, display a warning message
+				JOptionPane.showMessageDialog(null,"You guessed it right","Random Generator Warning",JOptionPane.WARNING_MESSAGE);
+			}
+			else
+			{
+				//if the user entered something different than an integer, display a warning message
+				JOptionPane.showMessageDialog(null,"You didn't guess correctly","Random Generator Warning",JOptionPane.WARNING_MESSAGE);
+			}
 	   }
 }

@@ -15,6 +15,7 @@ import java.awt.Color;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
+import javax.swing.JTextField;
 
 public class RandomWalkSetting {
 
@@ -38,6 +39,7 @@ public class RandomWalkSetting {
 	
 	
 	int frameWidth , frameHeight , targetWidth, targetHeight, shape, color, dot_color;
+	private JTextField txtGuess;
 	/**
 	 * Launch the application.
 	 */
@@ -69,7 +71,7 @@ public class RandomWalkSetting {
 	private void initialize() {
 		frmRandomWalkSetting = new JFrame();
 		frmRandomWalkSetting.setTitle("Random Walk Setting");
-		frmRandomWalkSetting.setBounds(100, 100, 240, 449);
+		frmRandomWalkSetting.setBounds(100, 100, 240, 483);
 		frmRandomWalkSetting.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmRandomWalkSetting.getContentPane().setLayout(null);
 		
@@ -148,22 +150,18 @@ public class RandomWalkSetting {
 				if (dotRed.isSelected())
 				{
 					dot_color = 1;
-					new RandomWalkMain(frameWidth, frameHeight, targetWidth, targetHeight, shape, color, dot_color).setVisible(true);
 				}
 				else if (dotYellow.isSelected())
 				{
 					dot_color = 2;
-					new RandomWalkMain(frameWidth, frameHeight, targetWidth, targetHeight, shape, color, dot_color).setVisible(true);
 				}
 				else if (dotGreen.isSelected())
 				{
 					dot_color = 3;
-					new RandomWalkMain(frameWidth, frameHeight, targetWidth, targetHeight, shape, color, dot_color).setVisible(true);
 				}
 				else if (dotBlue.isSelected())
 				{
 					dot_color = 4;
-					new RandomWalkMain(frameWidth, frameHeight, targetWidth, targetHeight, shape, color, dot_color).setVisible(true);
 				}
 				else
 				{
@@ -172,11 +170,26 @@ public class RandomWalkSetting {
 					JOptionPane.showMessageDialog(null,"Warning: Choose a color","Random Walk Warning",JOptionPane.WARNING_MESSAGE);
 				}
 				
-				
-				
+				//convert the text from the text box
+				try
+				{
+					int guess = Integer.parseInt(txtGuess.getText());
+					if (guess == 0)
+					{
+						new RandomWalkMain(frameWidth, frameHeight, targetWidth, targetHeight, shape, color, dot_color).setVisible(true);
+					}
+					else
+					{
+						new RandomWalkGuess(frameWidth, frameHeight, targetWidth, targetHeight, shape, color, dot_color, guess).setVisible(true);
+					}
+				}
+				catch (Exception e1)
+				{
+					new RandomWalkMain(frameWidth, frameHeight, targetWidth, targetHeight, shape, color, dot_color).setVisible(true);
+				}
 			}
 		});
-		btnApply.setBounds(10, 376, 89, 23);
+		btnApply.setBounds(8, 410, 89, 23);
 		frmRandomWalkSetting.getContentPane().add(btnApply);
 		
 		JLabel lblFrame = new JLabel("Frame:");
@@ -319,6 +332,16 @@ public class RandomWalkSetting {
 		label_5.setIcon(new ImageIcon("C:\\Users\\Admin\\Desktop\\ICS4U\\Assignment 3\\Images\\blue.jpg"));
 		label_5.setBounds(126, 348, 40, 17);
 		frmRandomWalkSetting.getContentPane().add(label_5);
+		
+		JLabel lblGuess = new JLabel("Guess:");
+		lblGuess.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblGuess.setBounds(10, 380, 58, 14);
+		frmRandomWalkSetting.getContentPane().add(lblGuess);
+		
+		txtGuess = new JTextField();
+		txtGuess.setBounds(67, 378, 86, 20);
+		frmRandomWalkSetting.getContentPane().add(txtGuess);
+		txtGuess.setColumns(10);
 		 
 	}
 }
